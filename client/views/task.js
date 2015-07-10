@@ -1,10 +1,9 @@
-Tasks = new Mongo.Collection("tasks");
 
 if (Meteor.isClient) {
 	
   Meteor.subscribe("tasks");
   // This code only runs on the client
-  Template.body.helpers({
+  Template.mainLayout.helpers({
     tasks: function(){
 		if (Session.get("hideCompleted")) {
 		  // If hide completed is checked, filter tasks
@@ -23,10 +22,10 @@ if (Meteor.isClient) {
 
   });
   
-  Template.body.events({
+  Template.mainLayout.events({
 	"submit .new-task": function (event) {
 		// This function is called when the new task form is submitted
-
+		console.log('submit received');
 		var text = event.target.text.value;
 
 		Meteor.call("addTask", text);
