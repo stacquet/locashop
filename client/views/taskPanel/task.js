@@ -3,7 +3,7 @@ if (Meteor.isClient) {
 	
   Meteor.subscribe("tasks");
   // This code only runs on the client
-  Template.mainLayout.helpers({
+  Template.taskPanel.helpers({
     tasks: function(){
 		if (Session.get("hideCompleted")) {
 		  // If hide completed is checked, filter tasks
@@ -22,7 +22,7 @@ if (Meteor.isClient) {
 
   });
   
-  Template.mainLayout.events({
+  Template.taskPanel.events({
 	"submit .new-task": function (event) {
 		// This function is called when the new task form is submitted
 		var text = event.target.text.value;
@@ -40,9 +40,9 @@ if (Meteor.isClient) {
   
   // Define a helper to check if the current user is the task owner
   Template.task.helpers({
-	  isOwner: function () {
+	isOwner: function () {
 		return this.owner === Meteor.userId();
-	  }
+	}
   });
   Template.task.events({
 	  "click .delete" : function(event){
@@ -60,20 +60,6 @@ if (Meteor.isClient) {
   
   Accounts.ui.config({
 	passwordSignupFields: "USERNAME_ONLY"
-  });
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-  Meteor.publish("tasks", function () {
-    return Tasks.find({
-		$or: [
-		  { private: {$ne: true} },
-		  { owner: this.userId }
-		]
-	});
   });
 }
 
